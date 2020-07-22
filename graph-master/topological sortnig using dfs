@@ -1,0 +1,29 @@
+https://practice.geeksforgeeks.org/problems/topological-sort/1/
+
+
+void dfs(vector<int> A[], vector<bool> &vis, stack<int> &s, int source){
+    vis[source]=true;
+    for(auto i:A[source]){
+        if(!vis[i]){
+            dfs(A, vis, s, i);
+        }
+    }
+    s.push(source);
+}
+
+vector<int> topoSort(int V, vector<int> adj[]) {
+    // Your code here
+    stack<int> s;
+    vector<bool> vis(V,false);
+    for(int i=0;i<V;i++){
+        if(!vis[i]){
+            dfs(adj, vis, s, i);
+        }
+    }
+    vector<int> v;
+    while(!s.empty()){
+        v.push_back(s.top());
+        s.pop();
+    }
+    return v;
+}

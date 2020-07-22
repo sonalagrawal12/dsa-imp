@@ -1,0 +1,32 @@
+vector <int> calculateSpan(int A[], int n)
+{
+   // Your code here
+   stack<int> s;
+   s.push(n-1);
+   vector<int> v(n,0);
+   int i;
+   for(i=n-2;i>=0;i--){
+   
+        // if the curr element is less than the stack top element push it inside the stack
+       if(A[i]<=A[s.top()]){
+           s.push(i);
+       } else{
+       
+          // keep poping the element from the stack which are less than the curr element as it will be the end of the span for them
+           while(!s.empty() && A[i]>A[s.top()]){
+               int x = s.top();
+               s.pop();
+               v[x] = x-i;
+           }
+           s.push(i);
+       }
+   }
+   
+   // check wheater the stack is empty or not and do the same for them
+   while(!s.empty()){
+       int x = s.top();
+       s.pop();
+       v[x] = x-i;
+   }
+   return v;
+}

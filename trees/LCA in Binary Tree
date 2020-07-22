@@ -1,0 +1,53 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ bool search(TreeNode *A, int B){
+     if(A!=NULL){
+         if(A->val==B || search(A->left,B) || search(A->right,B)){
+             return true;
+         }
+         return false;
+     }
+     return false;
+ }
+ void inorder(TreeNode *root, vector<TreeNode *> &s1, int &B, vector<TreeNode *> t1){
+     if(root){
+         if(root->val==B){
+             s1=t1;
+             s1.push_back(root);
+             return;
+         }
+         t1.push_back(root);
+         inorder(root->left,s1,B,t1);
+         inorder(root->right,s1,B,t1);
+     }
+ }
+int Solution::lca(TreeNode* A, int B, int C) {
+    if(search(A,B) && search(A,C)){
+        vector<TreeNode *> s1,s2,t1,t2;
+        inorder(A,s1,B,t1);
+        inorder(A,s2,C,t2);
+        if(s1.size()>s2.size()){
+            while(s1.size()!=s2.size()){
+                s1.pop_back();
+            }
+        }
+        else if(s2.size()>s1.size()){
+            while(s2.size()!=s1.size()){
+                s2.pop_back();
+            }
+        }
+        while(s1[s1.size()-1]!=s2[s2.size()-1]){
+            s1.pop_back();
+            s2.pop_back();
+        }
+        return s1[s1.size()-1]->val;
+    }
+    return -1;
+}

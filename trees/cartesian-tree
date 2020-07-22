@@ -1,0 +1,33 @@
+TreeNode *tree(vector<int> &A, int l, int r){
+    if(r>=l){
+        int j=l,max=A[l];
+        for(int i=l+1;i<=r;i++){
+            if(A[i]>max){
+                max=A[i];
+                j=i;
+            }
+        }
+        TreeNode *t=new TreeNode(max);
+        t->left = tree(A,l,j-1);
+        t->right = tree(A,j+1,r);
+        return t;
+    }
+    return NULL;
+}
+TreeNode* Solution::buildTree(vector<int> &A) {
+    TreeNode *t=NULL;
+    if(A.size()==0){
+        return t;
+    }
+    int j=0,max=A[0];
+    for(int i=1;i<A.size();i++){
+        if(A[i]>max){
+            max=A[i];
+            j=i;
+        }
+    }
+    t=new TreeNode(max);
+    t->left = tree(A,0,j-1);
+    t->right = tree(A,j+1,A.size()-1);
+    return t;
+}

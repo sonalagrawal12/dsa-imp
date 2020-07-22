@@ -1,0 +1,20 @@
+void subarraySum(int arr[], int n, int s){
+    
+    int curr=arr[0],r=0,j=0;
+    for(int i=1;i<=n;i++){
+        while(curr>s && j<i-1){
+            curr-=arr[j];
+            j+=1;
+        }
+        if(curr==s){
+            cout<<j+1<<" "<<i;
+            break;
+        }
+        if(i<n){
+            curr+=arr[i];
+        }
+        if(i==n){
+            cout<<-1;
+        }
+    }
+}

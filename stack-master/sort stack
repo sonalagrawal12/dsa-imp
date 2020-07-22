@@ -1,0 +1,81 @@
+=================USing Recursion====================
+
+/*The structure of the class is
+class SortedStack{
+public:
+	stack<int> s;
+	void sort();
+};
+*/
+void sortInsert(stack<int> &s, int x){
+
+    // is stack is empty or top element is less or equal to the next comming element push the element on top
+    if(s.empty() || s.top()<=x){
+        s.push(x);
+        return;
+    }
+    
+    // pop the top element and recusively find the appropriate location of newly comming element
+    int y = s.top();
+    s.pop();
+    sortInsert(s,x);
+    
+    // at the end push the popped element as it is greater thana the newly comming element
+    s.push(y);
+}
+/* The below method sorts the stack s 
+you are required to complete the below method */
+void SortedStack :: sort()
+{
+   //Your code here
+   if(!s.empty()){
+        // empty the stack recursively
+       int x = s.top();
+       s.pop();
+       SortedStack::sort();
+       
+       // push element one by one (just like insertion sort taking one element at a time and put it at its appropriate location)
+       sortInsert(s,x);
+   }
+   
+}
+
+
+=========================Using Iterative MEthod=======================
+
+/*The structure of the class is
+class SortedStack{
+public:
+	stack<int> s;
+	void sort();
+};
+*/
+
+/* The below method sorts the stack s 
+you are required to complete the below method */
+void SortedStack :: sort()
+{
+   //Your code here
+   
+   // insertion sort using one more stack
+   stack<int> s1;
+   while(!s.empty()){
+       if(s1.empty()){
+           s1.push(s.top());
+           s.pop();
+       } else{
+           int x = s.top();
+           while(!s1.empty() && s1.top()>x){
+               s.push(s1.top());
+               s1.pop();
+           }
+           s1.push(x);
+           while(s.top()!=x){
+               s1.push(s.top());
+               s.pop();
+           }
+           s.pop();
+       }
+   }
+   s=s1;
+}

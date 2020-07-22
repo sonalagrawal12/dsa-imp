@@ -1,0 +1,48 @@
+/*You are required to complete this method*/
+
+// same as max area in a histogram with variation is we are considering rows as the current height allowed to form a bar
+// so mix of dp and stack
+
+int maxArea(int A[MAX][MAX], int n, int m) {
+    // Your code here
+    vector<int> v(m,0);
+    int ma=0;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            v[j]+=A[i][j];
+            if(A[i][j]==0){
+                v[j]=0;
+            }
+        }
+        stack<int> s;
+        int j,curr=0;
+        for(j=0;j<m;j++){
+            if(s.empty() || v[j]>=v[s.top()]){
+                s.push(j);
+            } else{
+                while(!s.empty() && v[s.top()]>v[j]){
+                    int top = s.top();
+                    s.pop();
+                    if(s.empty()){
+                        curr = v[top]*j;
+                    } else{
+                        curr = v[top]*(j-s.top()-1);
+                    }
+                    ma = max(ma, curr);
+                }
+                s.push(j);
+            }
+        }
+        while(!s.empty()){
+            int top = s.top();
+            s.pop();
+            if(s.empty()){
+                curr = v[top]*j;
+            } else{
+                curr = v[top]*(j-s.top()-1);
+            }
+            ma = max(ma, curr);
+        }
+    }
+    return ma;
+}

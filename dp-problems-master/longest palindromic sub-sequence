@@ -1,0 +1,53 @@
+METHOD---1
+
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	ll t;
+	cin>>t;
+	while(t--){
+	    string s;
+	    cin>>s;
+	    ll n=s.length();
+	    ll dp[n+1][n+1]={0};
+      
+      //for length 1
+	    for(ll i=0;i<n;i++){
+	        dp[i][i]=1;
+	    }
+      
+      //for length 2 to n
+	    for(ll i=2;i<=n;i++){
+	        for(ll j=0;j<=n-i;j++){
+	            if(s[j]==s[j+i-1]){
+                  // if equal add 2 to the diagonally behind number or to the length (i-2)
+	                dp[j][j+i-1] = dp[j+1][j+i-2]+2;
+	            } else{
+              
+                  // if not equal put max of the length (i-1) which can either by removing first element aur by removing last element
+	                dp[j][i+j-1] = max(dp[j+1][j+i-1], dp[j][j+i-2]);
+	            }
+	        }
+	    }
+	    cout<<n-dp[0][n-1]<<endl;
+	}
+	
+	return 0;
+}
+
+
+
+
+
+METHOD----2
+
+reverse the given string and find the lcs of the two string 
+it will give the longest palindromic sub-sequence
+
+

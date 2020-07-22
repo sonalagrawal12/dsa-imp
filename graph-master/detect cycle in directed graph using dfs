@@ -1,0 +1,42 @@
+https://practice.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1/
+
+
+Function to check if the given graph contains cycle
+*   V: number of vertices
+*   adj[]: representation of graph
+*/
+
+bool dfs(vector<int> adj[], vector<bool> &vis, int s, vector<bool> &anc){
+    vis[s]=true;
+    
+    // it keeps track of the number of verteces currently in recurion stack
+    anc[s]=true;
+    for(auto i:adj[s]){
+        if(anc[i]){
+          
+          // if my current vertex is already in recursion stack that means 
+          // there is a back edge from child to its ancestor hence a cycle
+            return true;
+        } else if(!vis[i]){
+            if(dfs(adj, vis, i, anc)){
+                return true;
+            }
+        }
+    }
+    anc[s]=false;
+    return false;
+}
+
+bool isCyclic(int V, vector<int> adj[])
+{
+    // Your code here
+    vector<bool> vis(V,false), anc(V,false);
+    for(int i=0;i<V;i++){
+        if(!vis[i]){
+            if(dfs(adj, vis, i, anc)){
+                return true;
+            }
+        }
+    }
+    return false;
+}

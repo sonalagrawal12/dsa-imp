@@ -1,0 +1,44 @@
+// User function template for C++
+
+// KnightPos : knight position coordinates
+// targetPos : target position coordinated
+// N : square matrix size
+
+bool check(int x, int y, int n){
+
+    // to check for out of bounds condition
+    if(x<1 || y<1 || y>n || x>n){
+        return false;
+    }
+    return true;
+}
+
+int minStepToReachTarget(int k[], int t[], int n) {
+    // code here
+    
+    // we have 8 positions for the knight to move from the current cell
+    int dx[] = {-2, -2,-1, -1, 1, 1, 2, 2};   // needs to be sorted either in x direction or in y direction
+    int dy[] = {-1, 1, -2, 2, -2, 2, -1, 1};
+    
+    // normal bfs to find the shortest path
+    vector< vector<int> > dis(n+1, vector<int>(n+1,0));
+    queue< pair<int, int> > q;
+    q.push(make_pair(k[0], k[1]));
+    dis[k[0]][k[1]]=1;
+    while(!q.empty()){
+        pair<int, int> p = q.front();
+        q.pop();
+        int x = p.first, y=p.second;
+        for(int i=0;i<8;i++){
+            if(check(x+dx[i], y+dy[i], n)){
+                if(!dis[x+dx[i]][y+dy[i]]){
+                    dis[x+dx[i]][y+dy[i]] = dis[x][y]+1;
+                    q.push(make_pair(x+dx[i], y+dy[i]));
+                }
+            }
+        }
+    }
+    
+    // as we are making initial count as 1 so need to reduce it 
+    return dis[t[0]][t[1]]-1;
+}

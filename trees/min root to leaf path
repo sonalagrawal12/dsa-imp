@@ -1,0 +1,14 @@
+int Solution::minDepth(TreeNode* A) {
+    if(A==NULL){
+        return 0;
+    }
+    int x = minDepth(A->left);
+    int y = minDepth(A->right);
+    if(x && y){
+        return min(x,y)+1;
+    }
+    if(!x && y){
+        return y+1;
+    }
+    return x+1;
+}

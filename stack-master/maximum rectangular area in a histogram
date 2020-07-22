@@ -1,0 +1,48 @@
+long getMaxArea(long long arr[], int n){
+    
+    // Your code here
+    stack<long long int > s;
+    long long int i,curr=0,ma=0;
+    for(i=0;i<n;i++){
+    
+        // push inside the index of element which are greater than the stack top element 
+        if(s.empty() || arr[s.top()]<=arr[i]){
+            s.push(i);
+        } else{
+        
+            // if the curr element is smaller than the stack top element pop out the index and calculate the area
+            while(!s.empty() && arr[s.top()]>arr[i]){
+                long long int top = s.top();
+                s.pop();
+                if(s.empty()){
+                
+                    // if stack is empty just multiply the top element height with the curr index which signifies the length
+                    curr = arr[top]*i;
+                } else{
+                
+                    // this states that the element starting from the top index upto the ith index will contain the height at least
+                    // equals to the height of the top as we are only pushing the greater elements inside the stack and calculating
+                    // necessary area if some small element comes next
+                    curr = arr[top]*(i-s.top()-1);
+                }
+                ma = max(curr, ma);
+            }
+            
+            // push the curr element inside the stack as it will be greater than the stack top element
+            s.push(i);
+        }
+    }
+    
+    // same as above mentioned if at the end stack is not empty
+    while(!s.empty()){
+        long long int top = s.top();
+        s.pop();
+        if(s.empty()){
+            curr = arr[top]*i;
+        } else{
+            curr = arr[top]*(i-s.top()-1);
+        }
+        ma = max(curr, ma);
+    }
+    return ma;
+}

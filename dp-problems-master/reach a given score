@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long int ll;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	
+	ll t;
+	cin>>t;
+	while(t--){
+	    ll n;
+	    cin>>n;
+	    ll dp[n+1]={0};
+	    dp[0]=1;
+	    for(ll i=3;i<=n;i++){
+	        dp[i]+=dp[i-3];
+	    }
+	    for(ll i=5;i<=n;i++){
+	        dp[i]+=dp[i-5];
+	    }
+	    for(ll i=10;i<=n;i++){
+	        dp[i]+=dp[i-10];
+	    }
+	    cout<<dp[n]<<endl;
+	}
+	
+	return 0;
+}

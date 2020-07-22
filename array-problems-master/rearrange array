@@ -1,0 +1,18 @@
+https://www.interviewbit.com/problems/rearrange-array/
+
+
+void Solution::arrange(vector<int> &A) {
+    for(int i=0;i<A.size();i++){
+        // as we need to store 2 values at the same place we use % and / operators
+        // as A[i] is in between 0-(n-1) so is we add some interger multiply
+        // by size to it, it will give us the 2 values stored at the particular place
+        // eg. [2,3] n=5
+        // A[0] = 2 + 3*5 = 17;
+        // initital value A[0]%n = 17%5 = 2
+        // new value A[0]/n = 17/5 = 3
+        A[i] = A[i] + (A[A[i]]%A.size())*A.size();
+    }
+    for(int i=0;i<A.size();i++){
+        A[i] /= A.size();
+    }
+}

@@ -1,0 +1,58 @@
+https://leetcode.com/problems/number-of-islands/
+
+
+/*  Function to find number of islands in the given graph
+*   A[]: input array
+*   N, M: Row and column of given matrix
+*/
+
+bool check(int x, int y, int r, int c){
+    if(x<0 || y<0 || x>=r || y>=c){
+        return false;
+    }
+    return true;
+}
+
+void dfs(vector<int> A[], vector< vector<bool> > &vis, int r, int c, int n, int m){
+    vis[r][c]=true;
+    if(check(r-1, c, n, m) && A[r-1][c]==1 && !vis[r-1][c]){
+        dfs(A, vis, r-1, c, n, m);
+    }
+    if(check(r+1, c, n, m) && A[r+1][c]==1 && !vis[r+1][c]){
+        dfs(A, vis, r+1, c, n, m);
+    }
+    if(check(r, c-1, n, m) && A[r][c-1]==1 && !vis[r][c-1]){
+        dfs(A, vis, r, c-1, n, m);
+    }
+    if(check(r, c+1, n, m) && A[r][c+1]==1 && !vis[r][c+1]){
+        dfs(A, vis, r, c+1, n, m);
+    }
+    if(check(r+1, c+1, n, m) && A[r+1][c+1]==1 && !vis[r+1][c+1]){
+        dfs(A, vis, r+1, c+1, n, m);
+    }
+    if(check(r-1, c+1, n, m) && A[r-1][c+1]==1 && !vis[r-1][c+1]){
+        dfs(A, vis, r-1, c+1, n, m);
+    }
+    if(check(r+1, c-1, n, m) && A[r+1][c-1]==1 && !vis[r+1][c-1]){
+        dfs(A, vis, r+1, c-1, n, m);
+    }
+    if(check(r-1, c-1, n, m) && A[r-1][c-1]==1 && !vis[r-1][c-1]){
+        dfs(A, vis, r-1, c-1, n, m);
+    }
+}
+
+int findIslands(vector<int> A[], int n, int m) {
+
+    // Your code here
+    int c=0;
+    vector< vector<bool> > vis(n, vector<bool>(m,false));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(!vis[i][j] && A[i][j]==1){
+                dfs(A, vis, i, j, n, m);
+                c+=1;
+            }
+        }
+    }
+    return c;
+}

@@ -1,0 +1,58 @@
+/*  Function to find the area of 1s
+*   SIZE: declared globally for matrix definition
+*   n, m: row and column of matrix
+*   A[][]: 2D matrix from input
+*/
+
+bool check(int x, int y, int n, int m){
+    if(x<0 || y<0 || x>=n || y>=m){
+        return false;
+    }
+    return true;
+}
+
+void dfs(int A[SIZE][SIZE], int x, int y, int n, int m, int &c){
+    c+=1;
+    A[x][y]=0;
+    if(check(x-1,y-1,n,m) && A[x-1][y-1]){
+        dfs(A,x-1,y-1,n,m,c);
+    }
+    if(check(x+1,y+1,n,m) && A[x+1][y+1]){
+        dfs(A,x+1,y+1,n,m,c);
+    }
+    if(check(x-1,y+1,n,m) && A[x-1][y+1]){
+        dfs(A,x-1,y+1,n,m,c);
+    }
+    if(check(x+1,y-1,n,m) && A[x+1][y-1]){
+        dfs(A,x+1,y-1,n,m,c);
+    }
+    if(check(x-1,y,n,m) && A[x-1][y]){
+        dfs(A,x-1,y,n,m,c);
+    }
+    if(check(x+1,y,n,m) && A[x+1][y]){
+        dfs(A,x+1,y,n,m,c);
+    }
+    if(check(x,y-1,n,m) && A[x][y-1]){
+        dfs(A,x,y-1,n,m,c);
+    }
+    if(check(x,y+1,n,m) && A[x][y+1]){
+        dfs(A,x,y+1,n,m,c);
+    }
+    
+}
+
+int findMaxArea(int N, int M, int A[SIZE][SIZE] )
+{
+    // Your code here
+    int ma=0;
+    for(int i=0;i<N;i++){
+        for(int j=0;j<M;j++){
+            if(A[i][j]){
+                int c=0;
+                dfs(A,i,j,N,M,c);
+                ma = max(ma, c);
+            }
+        }
+    }
+    return ma;
+}

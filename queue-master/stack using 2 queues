@@ -1,0 +1,91 @@
+=====================Making push operation costly======================
+
+
+/* The structure of the class is
+class QueueStack{
+private:
+    queue<int> q1;
+    queue<int> q2;
+public:
+    void push(int);
+    int pop();
+};
+ */
+
+/* The method push to push element into the stack */
+void QueueStack :: push(int x)
+{
+        // Your Code
+        
+        // push new element into the empty queue
+        q2.push(x);
+        
+        // empty out the filled queue
+        while(!q1.empty()){
+            q2.push(q1.front());
+            q1.pop();
+        }
+        
+        // swap the name
+        swap(q1,q2);
+}
+
+/*The method pop which return the element poped out of the stack*/
+int QueueStack :: pop()
+{
+        // Your Code
+        int x=-1;
+        if(!q1.empty()){
+            x = q1.front();
+            q1.pop();
+        }
+        return x;
+        
+}
+
+
+
+==================Making pop operation costly=====================
+
+
+/* The structure of the class is
+class QueueStack{
+private:
+    queue<int> q1;
+    queue<int> q2;
+public:
+    void push(int);
+    int pop();
+};
+ */
+
+/* The method push to push element into the stack */
+void QueueStack :: push(int x)
+{
+        // Your Code
+        q1.push(x);
+}
+
+/*The method pop which return the element poped out of the stack*/
+int QueueStack :: pop()
+{
+        // Your Code
+        
+        // push everything to 2 queue except the last element
+        while(!q1.empty() && q1.size()!=1){
+            q2.push(q1.front());
+            q1.pop();
+        }
+        int x=-1;
+        
+        // return the last element if 1 queue is not empty
+        if(!q1.empty()){
+            x = q1.front();
+            q1.pop();
+        }
+        
+        // swap the name
+        swap(q1,q2);
+        return x;
+        
+}

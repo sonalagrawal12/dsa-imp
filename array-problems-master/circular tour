@@ -1,0 +1,61 @@
+https://practice.geeksforgeeks.org/problems/circular-tour-1587115620/1
+
+
+/*
+The structure of petrolPump is 
+struct petrolPump
+{
+    int petrol;
+    int distance;
+};*/
+
+/*You are required to complete this method*/
+
+int tour(petrolPump p[],int n){
+   //Your code here
+   
+   // take difference of petrol gain or loss at particular petrol pump in moving to the next one
+   vector<int> v;
+   for(int i=0;i<n;i++){
+       v.push_back(p[i].petrol - p[i].distance);
+   }
+//   for(auto i:v){
+//       cout<<i<<" ";
+//   }
+//   cout<<endl;
+
+    // the idea is we have two pointers one is covering the petrol pumps and one is the starting point
+    // if at any point our sum + next gain or loss becomes less than zero we start with the next petrol pump
+    // which is taken care by our second pointer j
+    // if j becomes equal to the length this signifies that we dont have any index from which we can start and 
+    // cover the whole circle
+   int i=0,j=0,sum=0;
+   while(j<n){
+       if(i>=n && i%n==j){
+           return j;
+       }
+       if(sum+v[i%n]>=0){
+        //   cout<<i<<endl;
+           sum+=v[i%n];
+           i+=1;
+       } else{
+           while(j<min(i,n)){
+               if(sum+v[i%n]<0){
+                   sum-=v[j];
+                   j+=1;
+               } else{
+                   break;
+               }
+           }
+           if(j==min(i,n)){
+               i+=1;
+               j+=1;
+           } else{
+               sum+=v[i%n];
+               i+=1;
+           }
+       }
+    //   cout<<i<<" "<<j<<" "<<sum<<endl;
+   }
+   return -1;
+}

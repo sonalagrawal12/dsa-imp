@@ -1,0 +1,30 @@
+int evaluatePostfix(string &str)
+{
+    // Your code here
+    stack<int> s;
+    for(auto i:str){
+        if(i>='0' && i<='9'){
+            s.push(i-'0');
+        } else{
+            int r = s.top();
+            s.pop();
+            int l = s.top();
+            s.pop();
+            switch (i){
+                case '+':
+                    s.push(l+r);
+                    break;
+                case '-':
+                    s.push(l-r);
+                    break;
+                case '*':
+                    s.push(l*r);
+                    break;
+                case '/':
+                    s.push(l/r);
+                    break;
+            }
+        }
+    }
+    return s.top();
+}
