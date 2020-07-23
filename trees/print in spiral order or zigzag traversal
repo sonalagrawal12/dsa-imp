@@ -1,0 +1,57 @@
+https://www.geeksforgeeks.org/zigzag-tree-traversal/
+
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child  
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+int height(Node *head){
+    if(!head){
+        return 0;
+    }
+    return max(height(head->left), height(head->right))+1;
+}
+
+void inorder(Node *head, vector< vector<int> > &v, int a){
+    if(head){
+        inorder(head->left, v, a+1);
+        v[a].push_back(head->data);
+        inorder(head->right, v, a+1);
+    }
+}
+
+void printSpiral(Node *root)
+{
+    //Your code here
+    if(root==NULL){
+        return;
+    }
+    
+    // to determine the number of levels in the current tree
+    int n = height(root);
+    
+    // to store the values which later on can be reversed accodingly
+    vector< vector<int> > v(n, vector<int>());
+    
+    // to store the correct value in the correct level
+    inorder(root,v,0);
+    
+    // just the reverse the values for zigzag traversal
+    for(int i=1;i<n;i+=2){
+        reverse(v[i].begin(), v[i].end());
+    }
+    for(auto i:v){
+        for(j:i){
+            cout<<j<<" ";
+        }
+    }
+}
