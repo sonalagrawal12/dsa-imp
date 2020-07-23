@@ -1,0 +1,39 @@
+https://leetcode.com/explore/challenge/card/july-leetcoding-challenge/547/week-4-july-22nd-july-28th/3399/
+
+Given an array of numbers nums, in which exactly two elements appear only once and all the other elements 
+appear exactly twice. Find the two elements that appear only once.
+
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int ans=0;
+        
+        // take xor of whole array as numbers are repeated twice (a^a=0) 
+        // at the end we have our two required numbers xored
+        for(auto i:nums){
+            ans^=i;
+        }
+        int x;
+        
+        // find the set bit in the xor as at that bit both numbers differ
+        // and we will have two sets with one required number in each
+        for(int i=0;i<32;i++){
+            if(ans&(1<<i)){
+                x=i;
+                break;
+            }
+        }
+        int a=0,b=0;
+        
+        // make the two sets and the xor of the two different sets
+        // will give us our ans as whole the numbers except 2 are repeated twice
+        for(auto i:nums){
+            if(i&(1<<x)){
+                a^=i;
+            } else{
+                b^=i;
+            }
+        }
+        return {a,b};
+    }
+};
