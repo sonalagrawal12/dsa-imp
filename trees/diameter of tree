@@ -1,0 +1,33 @@
+/* Tree node structure  used in the program
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+int height(Node *head, int &a){
+    if(!head){
+        return 0;
+    }
+    int l = height(head->left, a);
+    int r = height(head->right, a);
+    
+    // diameter will be the max height in right subtree and max height in left subtree plus 1
+    a = max(a, l+r+1);
+    return max(l,r)+1;
+}
+
+/* Computes the diameter of binary tree with given root.  */
+int diameter(Node* node) {
+    // Your code here
+    int a=0;
+    height(node, a);
+    return a;
+}
