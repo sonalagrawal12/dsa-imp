@@ -1,53 +1,119 @@
-/**
- * Definition for binary tree
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
- bool search(TreeNode *A, int B){
-     if(A!=NULL){
-         if(A->val==B || search(A->left,B) || search(A->right,B)){
-             return true;
-         }
-         return false;
-     }
-     return false;
- }
- void inorder(TreeNode *root, vector<TreeNode *> &s1, int &B, vector<TreeNode *> t1){
-     if(root){
-         if(root->val==B){
-             s1=t1;
-             s1.push_back(root);
-             return;
-         }
-         t1.push_back(root);
-         inorder(root->left,s1,B,t1);
-         inorder(root->right,s1,B,t1);
-     }
- }
-int Solution::lca(TreeNode* A, int B, int C) {
-    if(search(A,B) && search(A,C)){
-        vector<TreeNode *> s1,s2,t1,t2;
-        inorder(A,s1,B,t1);
-        inorder(A,s2,C,t2);
-        if(s1.size()>s2.size()){
-            while(s1.size()!=s2.size()){
-                s1.pop_back();
-            }
-        }
-        else if(s2.size()>s1.size()){
-            while(s2.size()!=s1.size()){
-                s2.pop_back();
-            }
-        }
-        while(s1[s1.size()-1]!=s2[s2.size()-1]){
-            s1.pop_back();
-            s2.pop_back();
-        }
-        return s1[s1.size()-1]->val;
+====================METHOD 1===========================================
+it requires 3 traversal of the tree and O(n) extra space to store the path
+from root to that particular node
+
+/* A binary tree node
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
     }
-    return -1;
+};
+ */
+
+/* If n1 and n2 are present, return pointer
+   to LCA. If both are not present, return 
+   NULL. Else if left subtree contains any 
+   of them return pointer to left.*/
+
+bool Path(Node *head, vector<Node *> &v, int &n){
+    if(!head){
+        return false;
+    }
+    v.push_back(head);
+    if(head->data==n){
+        return true;
+    }
+    bool x = Path(head->left, v, n);
+    if(!x){
+        x = Path(head->right, v, n);
+    }
+    if(!x){
+        v.pop_back();
+        return false;
+    }
+    return true;
+}
+
+Node* lca(Node* root ,int n1 ,int n2 )
+{
+   //Your code here 
+    if(!root){
+        return NULL;
+    }
+    vector<Node *> v1,v2;
+    
+    // inorder to know the presence of each value inside the tree
+    // if present then we will have the path from root to that particular node inside the vector
+    // if not present then we will simply return NULL or 0
+    if(!Path(root,v1,n1) || !Path(root, v2, n2)){
+        return NULL;
+    }
+    int i;
+    
+    // to check the lcs we will need to return the value which matches from the last in the vectors
+    for(i=0;i<min(v1.size(), v2.size());i++){
+        if(v1[i]!=v2[i]){
+            break;
+        }
+    }
+    return v1[i-1];
+}
+
+
+
+==================================METHOD 2===============================================================
+the idea is either the root will contain one of the value or both the values may be present in left subtree or in the right subtree
+or one value may be present in the left and other one in right subtree
+
+
+/* A binary tree node
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+/* If n1 and n2 are present, return pointer
+   to LCA. If both are not present, return 
+   NULL. Else if left subtree contains any 
+   of them return pointer to left.*/
+
+
+Node* lca(Node* root ,int n1 ,int n2 ){
+    
+   //Your code here 
+    if(!root){
+        return NULL;
+    }
+    
+    // if root contain one of the value then root is the ancestor
+    if(root->data==n1 || root->data==n2){
+        return root;
+    }
+    
+    Node *left = lca(root->left, n1, n2);
+    Node *right = lca(root->right, n1, n2);
+    
+    // if both values are not null means one value is present in one subtree and other one in other subtree
+    if(left && right){
+        return root;
+    }
+    
+    // whichever be null means both the values are present in other subtree
+    return (!left)?right:left;
 }
