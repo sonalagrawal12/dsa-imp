@@ -1,0 +1,46 @@
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child 
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+// Should print right view of tree
+void rightView(Node *root)
+{
+   // Your Code here
+   if(root==NULL){
+       return;
+   }
+   
+   // the idea is to print the last node of every level
+   queue<Node*> q;
+   q.push(root);
+   q.push(NULL);
+   while(!q.empty()){
+       Node* t = q.front();
+       q.pop();
+       if(!t){
+           if(!q.empty()){
+               q.push(NULL);
+           }
+       } else{
+           if(t->left){
+               q.push(t->left);
+           }
+           if(t->right){
+               q.push(t->right);
+           }
+           if(!q.front()){
+               cout<<t->data<<" ";
+           }
+       }
+   }
+}
