@@ -1,0 +1,61 @@
+/* node structure  used in the program
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+/*  Function which returns the  root of 
+    the constructed binary tree. */
+
+Node *createTree(int A[], int n)
+{
+    // Your code here
+    
+    // make an array that stores the created nodes
+    // initialize the array to NULL 
+    Node *B[n];
+    for(int i=0;i<n;i++){
+        B[i]=NULL;
+    }
+    int a=-1;
+    for(int i=0;i<n;i++){
+    
+        // if the current node has no parent just store its value for later return
+        // if current node is not already created create the node and make the array index
+        // point to that node
+        if(A[i]==-1){
+            a=i;
+            if(!B[i]){
+                Node *t = new Node(i);
+                B[i] = t;
+            }
+        }
+        
+        // if the curr node has some parent then check for both nodes that they are created or not
+        // if not created create them first and append the curr node as right or left child accordingly
+        else{
+            if(!B[A[i]]){
+                Node *t = new Node(A[i]);
+                B[A[i]] = t;
+            }
+            if(!B[i]){
+                Node *t = new Node(i);
+                B[i]=t;
+            }
+            if(B[A[i]]->left){
+                B[A[i]]->right = B[i];
+            } else{
+                B[A[i]]->left = B[i];
+            }
+        }
+    }
+    return B[a];
+}
