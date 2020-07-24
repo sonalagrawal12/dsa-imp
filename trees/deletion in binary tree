@@ -1,0 +1,89 @@
+// Just replace the node->data with the bottom-most and right-most node->data
+// this is the basic approach
+
+
+/*
+Structre of the node of the tree is as
+struct Node
+{
+	int data;
+	Node* left, *right;
+};
+*/
+
+void inorder(Node *root, int &key, Node **t){
+    if(root){
+        inorder(root->left, key, t);
+        if(root->data==key){
+            (*t)=root;
+            return;
+        }
+        inorder(root->right, key, t);
+    }
+}
+
+int height(Node *root){
+    if(root){
+        return max(height(root->left), height(root->right))+1;
+    }
+    return 0;
+}
+
+Node* traverse(Node *root, int &key, int &a){
+    if(root){
+        int l = height(root->left);
+        int r = height(root->right);
+        
+        // if right tree has more height traverse in the right part
+        if(r>l){
+            root->right = traverse(root->right, key, a);
+        }
+        
+        // if left tree has more height traverse in the left part
+        else if(l>r){
+            root->left = traverse(root->left, key, a);
+        }
+        
+        // if both have same height then check if the root is leaf node or not
+        // if it is leaf node delete that node and return NULL and update tha variable a with its val which
+        // is to be swapped with the actual node to be deleted
+        // if not a leaf node then traverse to the right part because of the condition given
+        else{
+            if(!root->left && !root->right){
+                a = root->data;
+                delete(root);
+                return NULL;
+            } else{
+                root->right = traverse(root->right, key, a);
+            }
+        }
+        return root;
+    }
+    return NULL;
+}
+
+// you are required to complete this function
+void deletionBT(struct Node* root, int key)
+{
+    // code here
+    int a=0;
+    
+    // if there is no node or only one node delete that node and mark root null
+    if(!root || !root->left && !root->right){
+        Node* temp = root;
+        delete(temp);
+        root = NULL;
+    }
+    Node *t=NULL;
+    
+    // to know the node which is to be deleted actually
+    inorder(root,key,&t);
+    
+    // to know the value which is to be swapped with the actual node
+    traverse(root, key, a);
+    
+    // if deleted node is the actual node then do nothing else swap the values
+    if(key!=a){
+        t->data=a;
+    }
+}
