@@ -55,3 +55,84 @@ void printSpiral(Node *root)
         }
     }
 }
+
+
+
+================METHOD 2=====================================
+using deque to pop the elements either from front or back according to the level
+
+//User function Template for C++
+/*Structure of the node of the binary tree is as
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+// return a vector containing the zig zag level order traversal of the given tree
+vector <int> zigZagTraversal(Node* root)
+{
+	// Code here
+	vector<int> v;
+	if(!root){
+	    return v;
+	}
+	deque<Node*> q;
+	q.push_back(root);
+	q.push_back(NULL);
+	int i=0;
+	while(!q.empty()){
+   
+         // if the level number is divisible by 2 which means we dont have to
+         // reverse the level so just simple keep popping from the front untill level ends
+         // and keep pushing in the order (left then right) at the back
+	    if(i%2==0){
+	        Node *t = q.front();
+	        q.pop_front();
+	        while(t){
+	            v.push_back(t->data);
+	            if(t->left){
+	                q.push_back(t->left);
+	            }
+	            if(t->right){
+	                q.push_back(t->right);
+	            }
+	            t = q.front();
+	            q.pop_front();
+	        }
+	        if(!q.empty()){
+	            q.push_front(t);
+	        }
+	    }
+       
+       // if the level is not divisible then we have to reverse the current level
+       // so keep popping from the back and push elements to the front in reverse order ( right then left)
+       else{
+	        Node *t = q.back();
+	        q.pop_back();
+	        while(t){
+	            v.push_back(t->data);
+	            if(t->right){
+	                q.push_front(t->right);
+	            }
+	            if(t->left){
+	                q.push_front(t->left);
+	            }
+	            t = q.back();
+	            q.pop_back();
+	        }
+	        if(!q.empty()){
+	            q.push_back(t);
+	        }
+	    }
+	    i+=1;
+	}
+	return v;
+}
+
