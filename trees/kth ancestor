@@ -1,0 +1,48 @@
+//User function Template for C++
+/*
+Structure of the node of the binary tree is as
+struct Node
+{
+	int data;
+	struct Node *left, *right;
+};
+*/
+
+bool hasPath(Node* root, int node, vector<int> &v){
+    if(root){
+        v.push_back(root->data);
+        if(root->data==node){
+            return true;
+        }
+        bool x = hasPath(root->left, node, v);
+        if(!x){
+            x = hasPath(root->right, node, v);
+        }
+        if(!x){
+            v.pop_back();
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+// your task is to complete this function
+int kthAncestor(Node *root, int k, int node)
+{
+    // Code here
+    vector<int> v;
+    
+    // check whether the given node is present in the tree or not
+    // if present this func gives me the root to that node path stores inside a vector
+    if(!hasPath(root, node, v)){
+        return -1;
+    }
+    
+    int a = v.size();
+    
+    if(a-1-k < 0){
+        return -1;
+    }
+    return v[a-1-k];
+}
