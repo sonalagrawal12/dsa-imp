@@ -1,0 +1,31 @@
+/*Complete the function below
+Node is as follows:
+struct Node{
+int data;
+Node *left,*right;
+};
+*/
+
+void inorder(Node *root, map<int, int> &m, int hr){
+    if(root){
+        inorder(root->left, m, hr-1);
+        m[hr]+=root->data;
+        inorder(root->right, m, hr+1);
+    }
+}
+
+vector <int> verticalSum(Node *root) {
+    // add code here.
+    
+    // to store the sum according to the horizontal distance from the root node
+    map<int, int> m;
+    
+    // third argument keeps track of the horizontal distance
+    // as we move left distance decreases by 1 and if we move right it increases by 1
+    inorder(root, m, 0);
+    vector<int> v;
+    for(auto i:m){
+        v.push_back(i.second);
+    }
+    return v;
+}
