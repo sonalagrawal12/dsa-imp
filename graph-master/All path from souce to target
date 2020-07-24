@@ -1,0 +1,36 @@
+https://leetcode.com/explore/challenge/card/july-leetcoding-challenge/547/week-4-july-22nd-july-28th/3400/
+
+
+class Solution {
+public:
+    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
+        vector< vector<int> > v;
+        
+        // this stores the element which are currently in the recursion stack
+        vector<int> v1;
+        dfs(graph,v,v1,0);
+        return v;
+    }
+    
+    void dfs(vector< vector<int> > &A, vector< vector<int> > &v, vector<int> &v1, int s){
+        // push the current element inside the recurion stack
+        v1.push_back(s);
+        
+        // if the current element is equal to the target element then we push this in our result
+        // and pop out this element from the recusion stack and search for another path
+        if(s==A.size()-1){
+            v.push_back(v1);
+            v1.pop_back();
+        }
+        
+        // if the current element is not equal to the target element then we find the target element in its neighbor
+        // if dont find the target element in its neighbor we simply pop it out from our recurion stack
+        else{
+            for(auto i:A[s]){
+                dfs(A,v,v1,i);
+            }
+            v1.pop_back();
+        }
+    }
+    
+};
