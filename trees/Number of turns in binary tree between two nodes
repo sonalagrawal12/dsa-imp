@@ -1,0 +1,71 @@
+https://practice.geeksforgeeks.org/problems/number-of-turns-in-binary-tree/1/?track=ppc-trees&batchId=221
+// the idea is to store the path from root to that particular nodes with their horizontal distances and then traverse inside that path
+
+//User function template for C++
+/*
+Structure of the node of the tree is as follows 
+struct Node {
+    struct Node* left, *right;
+    int data;
+};
+*/
+
+bool findPath(Node *root, int &key, vector< pair<int, int> > &v, int hr){
+    if(root){
+        v.push_back({root->data, hr});
+        if(root->data==key){
+            return true;
+        }
+        bool x = findPath(root->left, key, v, hr-1);
+        if(!x){
+            x = findPath(root->right, key, v, hr+1);
+        }
+        if(!x){
+            v.pop_back();
+            return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+// function should return the number of turns required to go from first node to second node 
+int NumberOFTurns(struct Node* root, int first, int second){
+
+    // stores the path from root to node
+    vector<pair<int, int> > v1, v2;
+    
+    // check whether both nodes are present or not and also calculate the path
+    if(!findPath(root, first, v1, 0) || !findPath(root, second, v2, 0)){
+        return -1;
+    }
+    
+    // finds lca of both the nodes
+    int i;
+    for(i=0;i<min(v1.size(), v2.size());i++){
+        if(v1[i].first!=v2[i].first){
+            break;
+        }
+    }
+    
+    // calculate the min turns from lca to that node
+    // the min turns simply are the places where their horizontal distances changes from the particular order
+    // suppose changes from decreasing to increasing or vice-versa
+    int sum=0;
+    for(int j=i;j<v1.size()-1;j++){
+        if(v1[j].second-v1[j-1].second!=v1[j+1].second-v1[j].second){
+            sum+=1;
+        }
+    }
+    for(int j=i;j<v2.size()-1;j++){
+        if(v2[j].second-v2[j-1].second!=v2[j+1].second-v2[j].second){
+            sum+=1;
+        }
+    }
+    
+    // if none of the nodes are lca then we need to add 1 to the ans as we need to make a turn from that part also
+    if(v1[i-1].first!=first && v1[i-1].first!=second){
+        sum+=1;
+    }
+    return sum;
+}
