@@ -1,0 +1,48 @@
+https://www.geeksforgeeks.org/check-binary-tree-contains-duplicate-subtrees-size-2/
+
+
+/*The structure of the Binary Tree Node  is
+struct Node
+{
+  char data;
+  struct Node* left;
+  struct Node* right;
+};*/
+
+string postorder(Node *root, map<string, int> &m){
+    if(root){
+        string l = postorder(root->left, m);
+        string r = postorder(root->right, m);
+        
+        // this will form the string for the current node which will be the sum of 
+        // root->data plus strings of left and right nodes
+        string s = root->data + l + r;
+        
+        // as we want the subtree to be checked as of size greater than or equal to 2
+        if(s.length()>3){
+            m[s]+=1;
+        }
+        return s;
+    }
+    
+    // if null then return the default char
+    return "X";
+}
+
+/*This function returns true if the tree contains 
+a duplicate subtree of size 2 or more else returns false*/
+bool dupSub(Node *root){
+    //your code here
+    
+    // the map will store the string which basically represents the root-left-right part for every node
+    // as key and its ocurrence as a value
+    map<string, int> m;
+    postorder(root,m);
+    for(auto i:m){
+        // cout<<i.first<<endl;
+        if(i.second>1){
+            return true;
+        }
+    }
+    return false;
+}
