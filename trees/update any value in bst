@@ -1,0 +1,97 @@
+// the idea is simple just delete that old value from the tree and then insert new value inside the tree
+
+/*
+Structure of the binary Search Tree is as
+struct node
+{
+	int key;
+	struct node *left, *right;
+};
+*/
+
+
+int height(node *root){
+    if(root){
+        return max(height(root->left), height(root->right))+1;
+    }
+    return 0;
+}
+
+node *pred(node *root){
+    while(root->right){
+        root = root->right;
+    }
+    return root;
+}
+
+node *succ(node *root){
+    while(root->left){
+        root = root->left;
+    }
+    return root;
+}
+
+node *delet(node *root, int val){
+    if(root){
+        if(root->key > val){
+            root->left = delet(root->left, val);
+        } else if(root->key < val){
+            root->right = delet(root->right, val);
+        } else{
+        
+            // if node is a leaf node
+            if(!root->left && !root->right){
+                delete(root);
+                return NULL;
+            } 
+            
+            // if any of the child is null
+            else if(!root->left){
+                node *temp = root;
+                root = root->right;
+                delete(temp);
+            } else if(!root->right){
+                node *temp = root;
+                root = root->left;
+                delete(temp);
+            }
+            
+            // if none of the child is null we simple find the inorder predessor or inorder successor
+            // and replace the node value with that value and delete that predeccor
+            else{
+                int l = height(root->left);
+                int r = height(root->right);
+                if(l>r){
+                    node *temp = pred(root->left);
+                    root->key = temp->key;
+                    root->left = delet(root->left, temp->key);
+                } else{
+                    node *temp = succ(root->right);
+                    root->key = temp->key;
+                    root->right = delet(root->right, temp->key);
+                }
+            }
+        }
+        return root;
+    }
+    return NULL;
+}
+
+
+// your task is to complete the Function
+// Function is used to change a key value in the given BST
+// Note: Function should return root node to the new modified BST
+struct node *changeKey(struct node *root, int oldVal, int newVal)
+{
+	// Code here
+  
+  // if both the values are same 
+	if(oldVal==newVal){
+	    return root;
+	}
+  
+  // just first delete the old value and then insert the new value
+	root = delet(root, oldVal);
+	root = insert(root, newVal);
+	return root;
+}
