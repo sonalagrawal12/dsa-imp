@@ -1,0 +1,42 @@
+/*struct Node
+{
+	int data;
+	Node *left, *right;
+	
+	Node(int x){
+	    data = x;
+	    left = NULL;
+	    right = NULL;
+	}
+	
+};*/
+
+Node *create(int post[], map<int, int> &m, int l, int r, int &pos){
+    if(r>=l){
+        pos-=1;
+        int k = m[post[pos]];
+        Node *root = new Node(post[pos]);
+        root->right = create(post, m, k+1, r, pos);
+        root->left = create(post, m, l, k-1, pos);
+        return root;
+    }
+    return NULL;
+}
+
+Node *constructTree (int post[], int n){
+    vector<int> in;
+    for(int i=0;i<n;i++){
+        in.push_back(post[i]);
+    }
+    sort(in.begin(), in.end());
+    map<int, int> m;
+    for(int i=0;i<n;i++){
+        m[in[i]]=i;
+    }
+    int pos=n-1;
+    int k = m[post[pos]];
+    Node *root = new Node(post[pos]);
+    root->right = create(post, m, k+1, n-1, pos);
+    root->left = create(post, m, 0, k-1, pos);
+    return root;
+-}
