@@ -1,0 +1,94 @@
+================================upper bound===========================
+
+//User function Template for C++
+
+/*
+struct Node {
+    int data;
+    Node* right;
+    Node* left;
+    
+    Node(int x){
+        data = x;
+        right = NULL;
+        left = NULL;
+    }
+};
+*/
+
+void inorder(Node *root, int &n, int &m){
+    if(root){
+    
+        // if root->data is less than the value to be searched then its upper bound will definitly lie in the right subtree
+        if(root->data < n){
+            inorder(root->right, n, m);
+        }
+        
+        // if the root->data is greater or equal this means it can be the canditate for the upper bound value
+        // so we update our min value accordinly
+        else{
+            m = min(root->data, m);
+            inorder(root->left, n, m);
+        }
+    }
+}
+
+// Function to find ceil of a given input in BST. If input is more 
+// than the max key in BST, return -1 
+int findCeil(Node* root, int input) 
+{ 
+    // value to store the required answer
+    int ma=INT_MAX;
+    inorder(root, input, ma);
+    return (ma==INT_MAX)?-1:ma;
+} 
+
+
+
+
+
+==============================lower bound===========================================
+
+
+//User function Template for C++
+
+/*
+struct Node {
+    int data;
+    Node* right;
+    Node* left;
+    
+    Node(int x){
+        data = x;
+        right = NULL;
+        left = NULL;
+    }
+};
+*/
+
+void inorder(Node *root, int &n, int &m){
+    if(root){
+    
+        // if root->data is greater than the value to be searched then its lower bound will definitly lie in the left subtree
+        if(root->data > n){
+            inorder(root->left, n, m);
+        }
+        
+        // if the root->data is less or equal this means it can be the canditate for the lower bound value
+        // so we update our max value accordinly
+        else{
+            m = max(root->data, m);
+            inorder(root->right, n, m);
+        }
+    }
+}
+
+// Function to find Floor of a given input in BST. If input is more 
+// than the max key in BST, return -1 
+int findFloor(Node* root, int input) 
+{ 
+    // value to store the required answer
+    int ma=-1;
+    inorder(root, input, ma);
+    return ma;
+} 
