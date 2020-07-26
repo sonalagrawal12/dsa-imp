@@ -1,0 +1,33 @@
+https://leetcode.com/explore/challenge/card/july-leetcoding-challenge/547/week-4-july-22nd-july-28th/3401/
+
+
+class Solution {
+public:
+    int findMin(vector<int> &num) {
+        int lo = 0;
+        int hi = num.size() - 1;
+        int mid = 0;
+        
+        while(lo < hi) {
+            mid = lo + (hi - lo) / 2;
+            
+            // if mid element is greater than the last element it means we can have our minimum
+            // element in between this as this part of the array is not sorted
+            if (num[mid] > num[hi]) {
+                lo = mid + 1;
+            }
+            
+            // if mid element is less than the last element which means we definitely can't have our minimum
+            // element here as this part of the array is sorted
+            else if (num[mid] < num[hi]) {
+                hi = mid;
+            }
+            
+            // if both are equal we should check for the element just before the last element
+            else { // when num[mid] and num[hi] are same
+                hi--;
+            }
+        }
+        return num[lo];
+    }
+};
