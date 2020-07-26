@@ -1,0 +1,40 @@
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child  
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+bool check(Node *root, long long int lower, long long int upper){
+    if(root){
+        bool l = check(root->left, lower, root->data);
+        bool r = check(root->right, root->data, upper);
+        
+        // if root->data is in the range assigned to it and its left and right child are also in range
+        // then return true else return false
+        if(root->data > lower && root->data < upper && l && r){
+            // cout<<1<<" "<<root->data<<endl;
+            return true;
+        }
+        return false;
+    }
+    return true;
+}
+
+// return true if the given tree is a BST, else return false
+bool isBST(Node* root) {
+    // Your code here
+    
+    // the idea is to check for the value for every node whether it is
+    // withing the boundary range or not
+    long long int a = INT_MAX, b = INT_MIN;
+    a+=1;
+    b-=1;
+    return check(root, b, a);
+}
