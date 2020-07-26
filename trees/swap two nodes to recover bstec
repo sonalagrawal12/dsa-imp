@@ -1,3 +1,11 @@
+// the idea is simple the first node which break the condition of increasing sequence will be first value 
+// and the last node which break the condition will be second value
+// 
+// eg 2-> 5-> 20-> 10-> 8
+// in the above eg 20 will be the first valu to break the condition so it will be first 
+// and 8 is the last node which have broken the condition so it will be the second node
+
+
 void inorder(TreeNode* node, TreeNode*& first, TreeNode*& second, TreeNode* &prev)
 {
 if(node==NULL)
